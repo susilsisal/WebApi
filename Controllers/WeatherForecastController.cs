@@ -1,3 +1,4 @@
+using ApiHost.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiHost.Controllers
@@ -29,5 +30,14 @@ namespace ApiHost.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("all-users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await DbHelper.QueryAsync<User>("select Userid,UserName from users");
+            return Ok(users);
+        }
+
+
     }
 }
