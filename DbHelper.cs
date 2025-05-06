@@ -4,6 +4,7 @@ using System.Data;
 
 namespace ApiHost
 {
+
     public static class DbHelper
     {
         private static string? _connectionString;
@@ -45,6 +46,21 @@ namespace ApiHost
             using var connection = CreateConnection();
             return await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
         }
+
+        public static async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object parameters = null)
+        {
+            using (var connection = CreateConnection())
+            {
+                // Execute the query asynchronously and get the first result (or default if none)
+                return await connection.QueryFirstOrDefaultAsync<T>(sql, parameters);
+            }
+        }
+        public static async Task<T> ExecuteScalarAsync<T>(string sql, object? parameters = null)
+        {
+            using var connection = CreateConnection();
+            return await connection.ExecuteScalarAsync<T>(sql, parameters);
+        }
+
     }
 
 }

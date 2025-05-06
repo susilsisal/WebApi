@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiHost.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
-    {
-        private static readonly string[] Summaries = new[]
+    {  private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
@@ -34,7 +31,7 @@ namespace ApiHost.Controllers
         [HttpGet("all-users")]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await DbHelper.QueryAsync<User>("select Userid,UserName from users");
+            var users = await DbHelper.QueryAsync<User>("select product_id as userid,name as UserName from products");
             return Ok(users);
         }
 
