@@ -5,7 +5,16 @@ using System.Text;
 
 namespace ApiHost.Models
 {
-    public class User
+
+
+    public class pgtest
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string email { get; set; }
+
+    }
+        public class User
     {
         public int UserId { get; set; }
         public string UserName { get; set; }

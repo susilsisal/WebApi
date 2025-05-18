@@ -34,6 +34,14 @@ namespace ApiHost.Controllers
             var users = await DbHelper.QueryAsync<User>("select product_id as userid,name as UserName from products");
             return Ok(users);
         }
+         
+        
+        [HttpGet("api/pgtest")]
+        public async Task<IActionResult> pgtest()
+        {
+            var users = await DbHelper.QueryAsync<pgtest>("SELECT * FROM test_users");
+            return Ok(users);
+        }
 
 
     }

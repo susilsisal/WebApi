@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Npgsql;
 using System.Data;
 
 namespace ApiHost
@@ -8,19 +9,26 @@ namespace ApiHost
     public static class DbHelper
     {
         private static string? _connectionString;
+        private static string? _provider;
 
         // Call this method during app startup to set the connection string
         public static void Initialize(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _provider = configuration.GetValue<string>("DatabaseProvider");
         }
 
         private static IDbConnection CreateConnection()
         {
-            if (string.IsNullOrEmpty(_connectionString))
-                throw new InvalidOperationException("Database connection string has not been initialized.");
+            if (string.IsNullOrEmpty(_connectionString) || string.IsNullOrEmpty(_provider))
+                throw new InvalidOperationException("Database config not initialized.");
 
-            return new SqlConnection(_connectionString);
+            return _provider.ToLower() switch
+            {
+                "postgres" => new NpgsqlConnection(_connectionString),
+                "sqlserver" => new SqlConnection(_connectionString),
+                _ => throw new NotSupportedException($"Unsupported provider: {_provider}")
+            };
         }
 
         public static async Task<IEnumerable<T>> QueryAsync<T>(string sql, object? parameters = null)

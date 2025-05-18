@@ -14,6 +14,14 @@ namespace ApiHost.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("api/get-customers")]
+        public async Task<IActionResult> GetCustomers( int id = 0)
+        {
+            var customers = await DbHelper.QueryStoredProcedureAsync<Customers>("usp_getcustomers", new {id});
+            return Ok(customers.ToList());
+        }
         [HttpPost]
         [Route("api/check-user")]
         public async Task<IActionResult> CheckUser([FromBody] usp_CheckUsers model)
