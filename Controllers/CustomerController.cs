@@ -19,7 +19,7 @@ namespace ApiHost.Controllers
         [Route("api/get-customers")]
         public async Task<IActionResult> GetCustomers( int id = 0)
         {
-            var customers = await DbHelper.QueryStoredProcedureAsync<Customers>("usp_getcustomers", new {id});
+            var customers = await DbHelper.QueryPostgresFunctionAsync<Customers>("usp_getcustomers", new {id});
             return Ok(customers.ToList());
         }
         [HttpPost]
