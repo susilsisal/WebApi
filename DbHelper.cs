@@ -49,6 +49,21 @@ namespace ApiHost
             return await connection.QueryAsync<T>(procedureName, parameters, commandType: CommandType.StoredProcedure);
         }
 
+
+        public static async Task<int> CallPostgresProcedureAsync(string procName, object parameters)
+        {
+            using var connection = CreateConnection();
+
+            // Extract property names to build param list: @p_name, @p_description, ...
+            var props = parameters.GetType().GetProperties();
+            var paramNames = string.Join(", ", props.Select(p => "@" + p.Name));
+
+            // Build CALL statement: CALL proc_name(@p_name, @p_description, ...)
+            var sql = $"CALL {procName}({paramNames});";
+
+            return await connection.ExecuteAsync(sql, parameters);
+        }
+
         public static async Task<int> ExecuteStoredProcedureAsync(string procedureName, object? parameters = null)
         {
             using var connection = CreateConnection();

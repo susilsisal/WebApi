@@ -8,9 +8,10 @@ namespace ApiHost.Controllers
     public class FruitsController : ControllerBase
     {
         [HttpPost]
-        public IActionResult AddFruit([FromBody] usp_Insert_productsParams model)
+        [Route("api/add-fruits")]
+        public IActionResult AddFruit([FromBody] usp_Insert_products model)
         {
-            DbHelper.ExecuteStoredProcedureAsync("usp_Insert_products", model);
+            DbHelper.CallPostgresProcedureAsync("usp_Insert_products", model);
 
             return Ok();
         }
@@ -42,12 +43,14 @@ namespace ApiHost.Controllers
 
 
 
-    public class usp_Insert_productsParams
-    {
-        public string name { get; set; }
-        public string description { get; set; }
-        public decimal price_per_kg { get; set; }
-        public DateTime created_at { get; set; }
-        public string status { get; set; }
-        public int categoryid { get; set; }
-    }
+public class usp_Insert_products
+{
+    public string name { get; set; }
+    public string description { get; set; }
+    public decimal current_selling_price { get; set; }
+    public DateTime created_at { get; set; }
+    public string status { get; set; }
+    public int categoryid { get; set; }
+    public decimal fsp { get; set; }
+    public string unit { get; set; }
+}
