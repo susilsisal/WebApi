@@ -24,7 +24,7 @@ namespace ApiHost.Controllers
         {
             try
             {
-                var fruits = await DbHelper.QueryStoredProcedureAsync<dynamic>("usp_GetActiveFruits", new { product_id });
+                var fruits = await DbHelper.QueryPostgresFunctionAsync<dynamic>("usp_GetActiveFruits", new { product_id });
                 return Ok(fruits.ToList());
             }
             catch (SqlException ex)
