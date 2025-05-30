@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
         }
 
         var token = BuildJwt(customerId, payload.Email);
-        return Ok(new { token });
+        return Ok(new { token, customerId });
     }
 
 
